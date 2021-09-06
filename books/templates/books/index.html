@@ -1,0 +1,24 @@
+{% extends 'books/layout.html' %}
+
+{% block title %} Search Books {% endblock %}
+
+{% block body %}  
+<div class="formContainer">
+    <form method="POST" action="{% url 'search' %}">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="title" class="form-label">Title</label>
+            <input type="text" class="form-control" id="title" name="title" placeholder="Example: Lord of Rings">
+          </div>
+          <div class="mb-3">
+            <label for="author" class="form-label">Author</label>
+            <input type="text" class="form-control" id="author" name="author" placeholder="Example: Tolkien">
+          </div>
+          {% if message %}
+          <div id="emailHelp" class="form-text" style="margin-bottom: 20px; color: red;">{{message}}</div>
+          {% endif %}
+        <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+</div>
+
+{% endblock %}
