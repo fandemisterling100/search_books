@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from .utilities import * 
+from .services import get_books_handler
 
 def index(request):
     """Render the index page to start the search"""
@@ -39,10 +39,9 @@ def search(request):
         "isbn": "9780747546290",
         "subject": "Fantasy fiction"
         }]
+    books2 = get_books_handler(title, author)
     
     # Render results
-    
-    
     return render(request, 'books/results.html', {
         "books": books
     })
