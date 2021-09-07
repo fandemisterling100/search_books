@@ -6,11 +6,41 @@ import requests
 from requests.models import Response
 
 URL = "http://openlibrary.org/search.json"
+SEARCH_LIMIT = 10
+
+def create_books_dictionary(response):
+    
+    docs = response.get("docs")[:SEARCH_LIMIT]
+    #import pdb; pdb.set_trace()
+    books = []
+    
+    for result in docs:
+        
+        author = result.get("author_name")
+        author = author[0] if author else "No Author"
+        subject = result.get("subject")
+        subject = ", ".join(subject) if subject else "No Subject"
+        isbn = result.get("isbn")
+        isbn = isbn[0] if isbn else "No ISBN"
+        
+        books.append(
+            {
+                "title": result.get("title"),
+                "author": author,
+                "isbn": isbn,
+                "publish_date": result.get("first_publish_year"),
+                "publisher": "Publisher",
+                "subject": subject
+            }
+        )
+        
+    return books
 
 def response_handler(response):
     
     if response.status_code == 200:
-        return response.json()
+
+        return create_books_dictionary(response.json())
     else:
         return 0
 

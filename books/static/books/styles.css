@@ -116,7 +116,9 @@
     border-radius: 8px;
 }
 
-
-
-
-
+.alert-danger {
+    margin-top: 5%;
+    margin-left: 10%;
+    margin-right: 10%;
+    text-align: center;
+}

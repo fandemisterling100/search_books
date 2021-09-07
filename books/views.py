@@ -14,8 +14,8 @@ def search(request):
     call the API"""
     
     # Get author and title
-    title = request.POST["title"]
-    author = request.POST["author"]
+    title = request.POST.get("title")
+    author = request.POST.get("author")
 
     # Server-side validation of the form to get at least one value
     if (title is None or title == "") and (author is None or author == ""):
@@ -24,24 +24,18 @@ def search(request):
     })
     
     # Call API to get results
-    books = [{
-        "title": "Lord of the Rings",
-        "author": "J. R. R. Tolkien",
-        "publish_date": "October 2001",
-        "publisher": "Coles Editorial Board",
-        "isbn": "0774011181",
-        "subject": "Motion pictures"
-        }, {
-        "title": "Harry Potter and the Philosopher's Stone",
-        "author": "J.K. Rowling",
-        "publish_date": "1999 November 25",
-        "publisher": "Scholastic Canada",
-        "isbn": "9780747546290",
-        "subject": "Fantasy fiction"
-        }]
-    books2 = get_books_handler(title, author)
+    books = get_books_handler(title, author)
     
-    # Render results
-    return render(request, 'books/results.html', {
-        "books": books
-    })
+    # Validate Response
+    if books:
+        
+        # Render results
+        return render(request, 'books/results.html', {
+            "books": books
+        })
+    else:
+        # Results not found
+        return render(request, 'books/results.html', {
+            "books": books,
+            "message": "We couldn't find any matches"
+        })
